@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda Estoica 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --azul-escuro: #1A3A52;
+            --azul-medio: #2B5278;
+            --azul-claro: #3A6FA0;
+            --grafite: #2D3436;
+            --grafite-light: #636E72;
+            --grafite-lighter: #B2BEC3;
+            --verde-teal: #2B6B5F;
+            --verde-teal-light: #3A8B78;
+            --branco: #FFFFFF;
+            --fundo: #F5F7F9;
+            --destaque: #3A8B78;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--fundo) 0%, #E8F0F5 100%);
+            color: var(--grafite);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul-medio) 100%);
+            color: var(--branco);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(26, 58, 82, 0.3);
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+            font-style: italic;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .month-nav {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        button {
+            background: var(--verde-teal);
+            color: var(--branco);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background: var(--verde-teal-light);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(43, 107, 95, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .month-display {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--azul-escuro);
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .lesson-section {
+            background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul-medio) 100%);
+            color: var(--branco);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 6px 20px rgba(26, 58, 82, 0.2);
+        }
+
+        .lesson-section h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            border-bottom: 3px solid var(--verde-teal-light);
+            padding-bottom: 10px;
+        }
+
+        .lesson-section p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            opacity: 0.98;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .day-card {
+            background: var(--branco);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(26, 58, 82, 0.15);
+            transition: all 0.3s ease;
+            border-left: 5px solid var(--azul-escuro);
+        }
+
+        .day-card:hover {
+            box-shadow: 0 8px 25px rgba(26, 58, 82, 0.25);
+            transform: translateY(-5px);
+        }
+
+        .day-header {
+            background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul-medio) 100%);
+            color: var(--branco);
+            padding: 15px;
+            border-radius: 8px;
+            margin: -20px -20px 20px -20px;
+            padding-left: 20px;
+        }
+
+        .day-header h3 {
+            font-size: 1.4em;
+            margin-bottom: 5px;
+        }
+
+        .day-header p {
+            opacity: 0.95;
+            font-size: 0.95em;
+        }
+
+        .section-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--azul-escuro);
+            margin-top: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title.morning {
+            border-top: 2px solid var(--grafite-lighter);
+            padding-top: 15px;
+        }
+
+        .section-title.target {
+            background: linear-gradient(135deg, var(--verde-teal) 0%, var(--verde-teal-light) 100%);
+            color: var(--branco);
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-left: 0;
+            margin-right: 0;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.15em;
+        }
+
+        .section-title.evening {
+            border-top: 2px solid var(--grafite-lighter);
+            padding-top: 15px;
+            margin-top: 20px;
+        }
+
+        .icon {
+            font-size: 1.3em;
+        }
+
+        .input-group {
+            margin-bottom: 12px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--grafite-lighter);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95em;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--azul-escuro);
+            box-shadow: 0 0 8px rgba(26, 58, 82, 0.2);
+        }
+
+        .input-group button {
+            padding: 10px 15px;
+            width: auto;
+            background: var(--verde-teal);
+            border-radius: 6px;
+        }
+
+        .input-group button:hover {
+            background: var(--verde-teal-light);
+        }
+
+        .items-list {
+            list-style: none;
+        }
+
+        .items-list li {
+            background: var(--fundo);
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border-left: 3px solid var(--verde-teal);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95em;
+        }
+
+        .items-list button {
+            padding: 6px 12px;
+            font-size: 0.85em;
+            background: #E74C3C;
+        }
+
+        .items-list button:hover {
+            background: #C0392B;
+        }
+
+        .quote-section {
+            background: linear-gradient(135deg, var(--grafite) 0%, var(--grafite-light) 100%);
+            color: var(--branco);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid var(--verde-teal-light);
+            font-style: italic;
+        }
+
+        .quote-section p {
+            margin-bottom: 8px;
+            line-height: 1.5;
+            font-size: 0.95em;
+        }
+
+        .quote-author {
+            text-align: right;
+            opacity: 0.85;
+            font-size: 0.9em;
+            font-style: normal;
+            margin-top: 8px;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-toggle button {
+            padding: 10px 20px;
+        }
+
+        .view-toggle button.active {
+            background: var(--verde-teal-light);
+        }
+
+        .list-view {
+            display: none;
+        }
+
+        .list-view.active {
+            display: block;
+        }
+
+        .grid-view.active {
+            display: grid;
+        }
+
+        .month-lessons {
+            display: none;
+        }
+
+        .month-lessons.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .calendar-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .month-nav {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .month-display {
+                width: 100%;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--grafite-light);
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📖 Agenda Estoica 2026</h1>
+            <p>"O que não está em nosso controle não nos pertence" - Epicteto</p>
+        </header>
+
+        <div class="controls">
+            <div class="month-nav">
+                <button onclick="previousMonth()">← Anterior</button>
+                <div class="month-display" id="monthDisplay">Janeiro 2026</div>
+                <button onclick="nextMonth()">Próximo →</button>
+            </div>
+            <div class="view-toggle">
+                <button class="active" onclick="switchView('grid')">📅 Grade</button>
+                <button onclick="switchView('list')">📋 Lista</button>
+            </div>
+        </div>
+
+        <div id="lessonContainer" class="month-lessons show"></div>
+
+        <div id="calendarGrid" class="calendar-grid grid-view active"></div>
+        <div id="listView" class="list-view"></div>
+
+        <div class="footer">
+            <p>🏛️ Viva com sabedoria estoica | 2026</p>
+        </div>
+    </div>
+
+    <script>
+        // Dados de lições do estoicismo
+        const monthlyLessons = {
+            0: {
+                title: "Memento Mori",
+                description: "Lembre-se de que você é mortal. Memento Mori, que significa 'lembre-se de que você morrerá', é uma das lições mais fundamentais do estoicismo. Esta reflexão não é para nos desanimar, mas para nos libertar. Ao reconhecer nossa finitude e a transitoriedade de todas as coisas, compreendemos a futilidade de preocupações triviais, inveja e medo. Assim, aprendemos a focar no que realmente importa: desenvolver nosso caráter, cuidar de quem amamos, e viver com virtude. Este mês, contemple a morte não com medo, mas como uma mestra que nos ensina a viver melhor."
+            },
+            1: {
+                title: "Ataraxia",
+                description: "A tranquilidade da alma é o estado mais elevado que podemos alcançar. Ataraxia, palavra grega que significa 'ausência de perturbação', é a paz mental completa livre de medo, dor e paixões destrutivas. Para os estoicos, esta não é uma felicidade passiva, mas um estado ativo alcançado através da virtude e da sabedoria. Quando praticamos a razão, aceitamos o que não podemos controlar e focamos na virtude, naturalmente chegamos à ataraxia. Dedique este mês a cultivar essa paz interior, observando como suas preocupações se dissipam quando você se alinha com a razão e a virtude."
+            },
+            2: {
+                title: "Apatheia",
+                description: "Apatheia significa a libertação de emoções destrutivas que nos controlam. Não se confunda com apatia moderna - isso não significa ser frio ou indiferente ao mundo. Significa, em vez disso, responder aos eventos da vida com razão, sabedoria e virtude, em vez de ser escravizado por reações impulsivas e emoções negativas. Um estoico pratica apatheia rejeitando a raiva, o desespero, a ganância e o medo, mas mantém a compaixão genuína, a coragem e a justiça. Este mês, observe suas emoções com distância: são elas que o controlam, ou você as controla com razão?"
+            },
+            3: {
+                title: "Dicotomia do Controle",
+                description: "Este é talvez o ensinamento mais prático e transformador do estoicismo. Há coisas completamente em nosso controle: nossas vontades, julgamentos, crenças, desejos e aversões - tudo que depende de nossa razão e escolha. Fora de nosso controle está tudo o mais: nosso corpo, propriedade, reputação, status social, acontecimentos externos. A maioria do sofrimento humano vem de tentarmos controlar o incontrolável. Este mês, pratique focar sua energia, paixão e atenção apenas no que pode controlar (seu caráter, suas ações, seus pensamentos), aceitando o resto com serenidade. Isso liberta você."
+            },
+            4: {
+                title: "Virtude como Bem Supremo",
+                description: "Para os estoicos, a virtude é o único bem verdadeiro e o único caminho para a verdadeira felicidade. Não é a riqueza, saúde, reputação ou prazeres que trazem significado - é a excelência moral. As quatro virtudes cardinais são: Sabedoria (escolher bem), Coragem (agir apesar do medo), Justiça (tratar os outros com integridade) e Temperança (moderação e autocontrole). Cada ação que você toma, cada decisão que faz, deve ser avaliada não por seus resultados externos, mas por se ela é virtuosa. Dedique-se a desenvolvê-las em todas as suas ações este mês, e verá como sua vida adquire propósito genuíno."
+            },
+            5: {
+                title: "Indiferença Preferencial",
+                description: "Este conceito refina nossa compreensão sobre a virtude. Enquanto a virtude é suprema e deve ser nosso objetivo final, os estoicos reconhecem que existem 'indiferentes preferíveis' - coisas que não são boas nem más em si, mas que racionalmente preferimos: saúde, riqueza, amigos queridos, conhecimento. O segredo está em buscá-los com razão, sem apego emocional ou ganância. Você pode desejar sucesso, mas não se deixar dominar pela ambição. Pode zelar por sua saúde, mas não temer a morte. Este mês, aprenda a perseguir seus objetivos práticos com inteligência, mantendo a virtude como sua prioridade absoluta e inquebrantável."
+            },
+            6: {
+                title: "Autodomínio",
+                description: "Proskoche é a palavra grega para 'atenção' ou 'prontidão', e representa a disciplina de desejar apenas o que é virtuoso. O autodomínio não é repressão ou negação da vida - é liberdade genuína. É estar ciente de seus impulsos, desejos e aversões, e deliberadamente escolher quais alimentar e quais rejeitar. Cada dia, você é tentado por desejos prejudiciais: ganância, luxúria, vingança, preguiça. Um estoico observa estes impulsos com razão e decide: 'Isso não é bom para minha alma, então não vou permitir isso.' Este mês, fortaleça seu autodomínio rejeitando ativamente os desejos prejudiciais e cultivando apenas aqueles que desenvolvem sua virtude. Seja o senhor de seus impulsos."
+            },
+            7: {
+                title: "Cosmopolitismo Estoico",
+                description: "Os estoicos ensinavam que você não é apenas um indivíduo ou membro de sua nação - você é um cidadão do mundo, parte da humanidade e até do universo. Todos compartilhamos a mesma razão divina (logos) e temos responsabilidade com toda a humanidade. Isso significa que devemos transcender preconceitos de nacionalidade, classe, raça ou status. Sua compaixão e senso de justiça devem estender-se a todos os seres. Marco Aurélio, emperador romano, escreveu que considerava os germânicos e partos como seus irmãos. Este mês, pratique expandir seu círculo de compaixão além de sua família e amigos, vendo em cada pessoa um parceiro no grande teatro da vida humana."
+            },
+            8: {
+                title: "Resilência e Estoicismo",
+                description: "O ensinamento estoico mais inspirador é este: 'Os obstáculos não são entraves ao caminho - os obstáculos são o caminho.' Não se trata de negar dificuldades ou sofrimento, mas de transformá-los em oportunidades para demonstrar sua virtude. Quando você enfrenta um desafio, uma perda, uma injustiça - essas são chances de mostrar coragem, justiça, sabedoria e temperança. Um soldado não odeia a batalha que testa seu valor; ele vê nela a chance de se provar. Este mês, mude sua perspectiva sobre os obstáculos na sua vida. Cada dificuldade é um teste de seu caráter, uma chance de crescer moralmente. Assim, não há 'maus' eventos, apenas eventos que nos revelam quem realmente somos."
+            },
+            9: {
+                title: "Aceitação do Destino",
+                description: "Amor Fati significa 'amor ao destino' - não apenas aceitar o que acontece, mas amá-lo. Não com resignação passiva, mas com uma disposição ativa e grata. Os estoicos acreditam que viver de acordo com a natureza significa aceitar que fazemos parte de um universo ordenado, e tudo que acontece, happen por razão. Você não pode controlar seus pais, seu nascimento, muitos dos desafios que enfrenta - mas pode escolher amar sua vida exatamente como é. Marco Aurélio dizia: 'Uma vida tranquila é feita pelo homem que não se recusa a nada do que acontece.' Veja cada experiência, até as dolorosas, como necessária para seu crescimento e sabedoria. Este mês, pratique dizer 'sim' à vida."
+            },
+            10: {
+                title: "Vida Simples e Moderada",
+                description: "A simplicidade e moderação não são privação - são libertação. Os estoicos praticavam regularmente austeridade voluntária: comiam alimentos simples, vestiam-se adequadamente sem luxo, dormiam em camas duras. Por quê? Para se fortalecerem moralmente e terem menos medo de perder coisas. Se você pode ser feliz com pouco, então até a pobreza não pode derrotá-lo. Marco Aurélio, um dos homens mais poderosos de Roma, praticava voluntariamente a vida simples. Você não precisa ser rico para viver bem - a satisfação vem da virtude, não da abundância. Este mês, experimente viver com menos: simplifique suas refeições, seus pertences, seus desejos. Você encontrará liberdade e contentamento genuíno na moderação."
+            },
+            11: {
+                title: "Reflexão e Sabedoria",
+                description: "Encerre o ano com reflexão profunda sobre sua jornada. Sabedoria (sofrosyne) não é conhecimento intelectual, mas discernimento prático sobre como viver bem. É alcançada através da autoexaminação honesta e do aprendizado contínuo. Os estoicos praticavam a premeditatio malorum (reflexão sobre dificuldades), o resumo diário de suas ações, e contemplação de suas falhas. Examine seus erros sem autocrítica destrutiva - aprenda com eles. Examine seus progressos e celebre seu crescimento moral. Veja quais virtudes desenvolveu, em quais ainda pode melhorar. Um sábio nunca cessa de aprender; cada dia é uma lição. Este mês, seja honesto consigo mesmo sobre quem você foi e comprometa-se com quem quer ser em 2026."
+            }
+        };
+
+        // Citações estoicas
+        const stoicQuotes = [
+            { text: "O que não está em nosso controle não nos pertence.", author: "Epicteto" },
+            { text: "Você tem poder sobre sua mente, não sobre eventos externos. Perceba isto e você encontrará força.", author: "Marco Aurélio" },
+            { text: "Somos perturbados não pelas coisas, mas pelas visões que temos delas.", author: "Epicteto" },
+            { text: "Não penses em ti mesmo como menos valioso do que és.", author: "Marco Aurélio" },
+            { text: "A vida é longa se você souber como usá-la.", author: "Sêneca" },
+            { text: "Escolhe não ser prejudicado e você não será ferido.", author: "Marco Aurélio" },
+            { text: "A morte é uma coisa assustadora se esquecermos de nós mesmos.", author: "Epicteto" },
+            { text: "A felicidade vem da paz da mente.", author: "Sêneca" },
+            { text: "Você pode controlar suas ações, mas não os seus sentimentos. Controle suas ações.", author: "Marco Aurélio" },
+            { text: "O homem sábio não dá a resposta certa, ele não faz a pergunta errada.", author: "Sêneca" },
+            { text: "Tudo que nos acontece é para o bem. Este é meu lema.", author: "Marco Aurélio" },
+            { text: "Se desejares melhorar, esteja satisfeito com parecer tolo e ignorante.", author: "Epicteto" },
+            { text: "Você nasce com todas as qualidades; você apenas precisa desenvolvê-las.", author: "Sêneca" },
+            { text: "O obstáculo é o caminho.", author: "Marco Aurélio" },
+            { text: "Não é o homem que morre, é o tempo.", author: "Sêneca" },
+            { text: "A morte apenas nos importa quando está nela. Enquanto esperamos por ela, ela não está; quando ela vier, não estaremos.", author: "Sêneca" },
+            { text: "Nunca é tarde demais para começar a aprender.", author: "Sêneca" },
+            { text: "Um obstáculo não é uma razão para desistir; é uma chance de mudar de rumo.", author: "Marco Aurélio" },
+            { text: "A verdade é como o ar; quanto mais respiramos, mais forte nos tornamos.", author: "Sêneca" },
+            { text: "Tudo é apenas perspectiva. Escolha a sua.", author: "Marco Aurélio" },
+            { text: "O sofrimento é a via para a virtude.", author: "Epicteto" },
+            { text: "A vida é o que você faz dela. Sempre foi, sempre será.", author: "Sêneca" }
+        ];
+
+        let currentMonth = 0;
+        const months = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
+
+        let data = {};
+
+        // Carregar dados do localStorage
+        function loadData() {
+            const saved = localStorage.getItem('agendaData');
+            if (saved) {
+                data = JSON.parse(saved);
+            }
+        }
+
+        // Salvar dados no localStorage
+        function saveData() {
+            localStorage.setItem('agendaData', JSON.stringify(data));
+        }
+
+        // Obter número de dias em um mês
+        function getDaysInMonth(month) {
+            return new Date(2026, month + 1, 0).getDate();
+        }
+
+        // Alternar mês
+        function nextMonth() {
+            currentMonth = (currentMonth + 1) % 12;
+            renderCalendar();
+        }
+
+        function previousMonth() {
+            currentMonth = (currentMonth - 1 + 12) % 12;
+            renderCalendar();
+        }
+
+        // Alternar visualização
+        function switchView(view) {
+            const gridView = document.getElementById('calendarGrid');
+            const listView = document.getElementById('listView');
+            const buttons = document.querySelectorAll('.view-toggle button');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (view === 'grid') {
+                gridView.classList.add('active');
+                listView.classList.remove('active');
+            } else {
+                gridView.classList.remove('active');
+                listView.classList.add('active');
+                renderListView();
+            }
+        }
+
+        // Obter citação do dia
+        function getQuoteForDay(day) {
+            return stoicQuotes[(day - 1) % stoicQuotes.length];
+        }
+
+        // Renderizar calendário
+        function renderCalendar() {
+            document.getElementById('monthDisplay').textContent = `${months[currentMonth]} 2026`;
+            document.getElementById('calendarGrid').innerHTML = '';
+
+            // Mostrar lição do mês
+            renderMonthLesson();
+
+            const daysInMonth = getDaysInMonth(currentMonth);
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayKey = `${currentMonth}-${day}`;
+            const dayData = data[dayKey] || { morning: [], evening: [], target: '', quote: null };
+                const card = createDayCard(day, dayData);
+                document.getElementById('calendarGrid').appendChild(card);
+            }
+        }
+
+        // Renderizar lição do mês
+        function renderMonthLesson() {
+            const lesson = monthlyLessons[currentMonth];
+            const lessonContainer = document.getElementById('lessonContainer');
+
+            lessonContainer.innerHTML = `
+                <div class="lesson-section">
+                    <h2>📚 ${lesson.title}</h2>
+                    <p>${lesson.description}</p>
+                </div>
+            `;
+        }
+
+        // Criar card do dia
+        function createDayCard(day, dayData) {
+            const card = document.createElement('div');
+            card.className = 'day-card';
+
+            const date = new Date(2026, currentMonth, day);
+            const dayName = date.toLocaleDateString('pt-BR', { weekday: 'long' });
+
+            const quote = dayData.quote || getQuoteForDay(day);
+
+            let morningHTML = dayData.morning.map((item, idx) => `
+                <li>
+                    <span>${item}</span>
+                    <button onclick="removeItem('${currentMonth}-${day}', 'morning', ${idx})">✕</button>
+                </li>
+            `).join('');
+
+            let eveningHTML = dayData.evening.map((item, idx) => `
+                <li>
+                    <span>${item}</span>
+                    <button onclick="removeItem('${currentMonth}-${day}', 'evening', ${idx})">✕</button>
+                </li>
+            `).join('');
+
+            card.innerHTML = `
+                <div class="day-header">
+                    <h3>Dia ${day}</h3>
+                    <p>${dayName.charAt(0).toUpperCase() + dayName.slice(1)}, ${day} de ${months[currentMonth]}</p>
+                </div>
+
+                <div class="section-title morning">
+                    <span class="icon">☀️</span>
+                    <span>Pela Manhã - O Que Agradecer</span>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="morning-${currentMonth}-${day}" placeholder="O que você é grato...">
+                    <button onclick="addMorningItem(${day})">+</button>
+                </div>
+                <ul class="items-list">
+                    ${morningHTML}
+                </ul>
+
+                <div class="section-title target">
+                    <span class="icon">🎯</span>
+                    <span>Alvo do Dia</span>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="target-${currentMonth}-${day}" placeholder="Qual é seu objetivo principal..." value="${dayData.target || ''}">
+                    <button onclick="saveTargetItem(${day})">✓</button>
+                </div>
+
+                <div class="section-title evening">
+                    <span class="icon">🌙</span>
+                    <span>À Noite - Como Melhorar</span>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="evening-${currentMonth}-${day}" placeholder="Como posso melhorar...">
+                    <button onclick="addEveningItem(${day})">+</button>
+                </div>
+                <ul class="items-list">
+                    ${eveningHTML}
+                </ul>
+
+                <div class="quote-section">
+                    <p>"${quote.text}"</p>
+                    <div class="quote-author">— ${quote.author}</div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // Adicionar item matutino
+        function addMorningItem(day) {
+            const input = document.getElementById(`morning-${currentMonth}-${day}`);
+            const value = input.value.trim();
+
+            if (!value) return;
+
+            const dayKey = `${currentMonth}-${day}`;
+            if (!data[dayKey]) {
+                data[dayKey] = { morning: [], evening: [], target: '', quote: null };
+            }
+
+            data[dayKey].morning.push(value);
+            input.value = '';
+            saveData();
+            renderCalendar();
+        }
+
+        // Salvar alvo do dia
+        function saveTargetItem(day) {
+            const input = document.getElementById(`target-${currentMonth}-${day}`);
+            const value = input.value.trim();
+
+            const dayKey = `${currentMonth}-${day}`;
+            if (!data[dayKey]) {
+                data[dayKey] = { morning: [], evening: [], target: '', quote: null };
+            }
+
+            data[dayKey].target = value;
+            saveData();
+            renderCalendar();
+        }
+
+        // Adicionar item noturno
+        function addEveningItem(day) {
+            const input = document.getElementById(`evening-${currentMonth}-${day}`);
+            const value = input.value.trim();
+
+            if (!value) return;
+
+            const dayKey = `${currentMonth}-${day}`;
+            if (!data[dayKey]) {
+                data[dayKey] = { morning: [], evening: [], target: '', quote: null };
+            }
+
+            data[dayKey].evening.push(value);
+            input.value = '';
+            saveData();
+            renderCalendar();
+        }
+
+        // Remover item
+        function removeItem(dayKey, type, idx) {
+            if (data[dayKey] && data[dayKey][type]) {
+                data[dayKey][type].splice(idx, 1);
+                saveData();
+                renderCalendar();
+            }
+        }
+
+        // Renderizar visualização em lista
+        function renderListView() {
+            const listView = document.getElementById('listView');
+            const daysInMonth = getDaysInMonth(currentMonth);
+            let html = '<div style="padding: 20px;">';
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayKey = `${currentMonth}-${day}`;
+                const dayData = data[dayKey] || { morning: [], evening: [] };
+                const date = new Date(2026, currentMonth, day);
+                const dayName = date.toLocaleDateString('pt-BR', { weekday: 'long' });
+
+                html += `
+                    <div style="background: white; padding: 15px; margin-bottom: 15px; border-radius: 8px; border-left: 4px solid var(--petroleo);">
+                        <h4 style="color: var(--petroleo); margin-bottom: 10px;">Dia ${day} - ${dayName.charAt(0).toUpperCase() + dayName.slice(1)}</h4>
+                        
+                        <div style="margin-bottom: 10px;">
+                            <strong style="color: var(--petroleo);">☀️ Gratidão:</strong>
+                            ${dayData.morning.length > 0 ? '<ul style="margin-left: 20px; margin-top: 5px;">' + dayData.morning.map(item => `<li>${item}</li>`).join('') + '</ul>' : '<p style="margin-left: 20px; color: var(--grafite-light);">Nenhum item</p>'}
+                        </div>
+                        
+                        <div>
+                            <strong style="color: var(--petroleo);">🌙 Melhorias:</strong>
+                            ${dayData.evening.length > 0 ? '<ul style="margin-left: 20px; margin-top: 5px;">' + dayData.evening.map(item => `<li>${item}</li>`).join('') + '</ul>' : '<p style="margin-left: 20px; color: var(--grafite-light);">Nenhum item</p>'}
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+            listView.innerHTML = html;
+        }
+
+        // Inicializar
+        loadData();
+        renderCalendar();
+    </script>
+</body>
+</html>
